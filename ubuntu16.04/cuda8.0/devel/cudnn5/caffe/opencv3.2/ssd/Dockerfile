@@ -38,7 +38,7 @@ RUN wget https://github.com/NVIDIA/nccl/releases/download/v1.2.3-1%2Bcuda8.0/lib
   rm libnccl-dev_1.2.3-1.cuda8.0_amd64.deb
 
 WORKDIR /
-RUN pip install --upgrade pip && pip install numpy
+RUN pip install --upgrade pip && pip install -v numpy==1.13.3
 RUN wget https://github.com/opencv/opencv/archive/3.2.0.zip -O opencv3.zip && \
     unzip -q opencv3.zip && mv /opencv-3.2.0 /opencv
 RUN wget https://github.com/opencv/opencv_contrib/archive/3.2.0.zip -O opencv_contrib3.zip && \
@@ -79,8 +79,8 @@ RUN apt-get install -y \
 
 WORKDIR /root
 RUN pip install -U pip && cd /root && git clone https://github.com/weiliu89/caffe.git && \
-    cd caffe && git checkout ssd && cat python/requirements.txt | xargs -n1 pip install && \ 
-    pip install -v thrift==0.9.3 && apt-get install -y supervisor && pip install opencv-python
+    cd caffe && git checkout ssd && sed -i "s/Pillow>=2.3.0/Pillow==3.1.2/g" python/requirements.txt && cat python/requirements.txt | xargs -n1 pip install && \ 
+    pip install -v thrift==0.9.3 pycrypto && apt-get install -y supervisor && pip install opencv-python
 
 RUN cd /root/caffe && \
 # Make and move into build directory
